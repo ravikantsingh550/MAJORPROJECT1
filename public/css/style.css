@@ -2,8 +2,14 @@ body{
     
 
   font-family: "Plus Jakarta Sans", sans-serif  !important;
- 
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
+}
+
+.container{
+    flex: 1;
 }
 
 /* navbar */
@@ -83,4 +89,16 @@ body{
 .card-img-overlay:hover{
     opacity: 0.2;
     background-color: white;
+}
+
+/* new page  */
+.add-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+/* edit page */
+.edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
 }
