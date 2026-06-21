@@ -4,15 +4,15 @@
     <div class="col-8 offset-2">
         <br>
     <h2>Create a new listing</h2>
-    <form method="POST"  action="/listings">
+    <form method="POST"  action="/listings" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" placeholder="Add a catcy title" type="text" class="form-control">
+            <input name="listing[title]" placeholder="Add a catcy title" type="text" class="form-control" required>
         </div>
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" type="text "></textarea>
+            <textarea name="listing[description]" class="form-control" type="text "required></textarea>
         </div>
         
         <div class="mb-3">
@@ -23,18 +23,18 @@
         <div class="row">
         <div class="mb-3 col-md-4">
             <label for="price" class="form-label">Price</label>
-            <input name="listing[price]" placeholder="enter price" type="number" class="form-control">
+            <input name="listing[price]" placeholder="enter price" type="number" class="form-control"required>
         </div>
         
         <div class="mb-3 col-md-8">
             <label for="country" class="form-label">Country</label>
-            <input name="listing[country]" placeholder="enter country" type="text" class="form-control">
+            <input name="listing[country]" placeholder="enter country" type="text" class="form-control"required>
         </div>
         </div>
 
         <div class="mb-3">
              <label for="location" class="form-label">Location</label>
-             <input name="listing[location]" placeholder="enter location" type="text" class="form-control">
+             <input name="listing[location]" placeholder="enter location" type="text" class="form-control"required>
         </div>
         
         
