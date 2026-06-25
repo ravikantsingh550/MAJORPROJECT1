@@ -1,15 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const expressError = require("./utils/expressError.js");
-const {listingSchema , reviewSchema}  = require("./schema.js");
-const Review = require("./models/reviews.js");
 const listings = require("./routes/listings.js");
+const reviews = require("./routes/reviews.js");
 
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -36,61 +33,8 @@ app.get("/" , (req, res)=>{
     res.send("hii i am root");
 });
 
-
-
-const validateReview = (req , res , next)=>{
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new expressError(400 , errMsg);
-    }else{
-        next();
-    }
-};
-
 app.use("/listings" , listings);
-
-
-
-//reviews
-//post review route
-
-app.post("/listings/:id/reviews" ,validateReview , wrapAsync( async(req , res)=>{
-    let {id} = req.params;
-    let listing = await Listing.findById(id);
-    let newReview = new Review(req.body.review);
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-    
-    res.redirect(`/listings/${listing._id}`);
-}));
-
-// Delete Review route
-
-app.delete("/listings/:id/reviews/:reviewId" , wrapAsync(async(req , res)=>{
-    let {id, reviewId} = req.params;
-
-    await Listing.findByIdAndUpdate(id , {$pull:{reviews:reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`);
-}));
-
-
-// app.get("/testlisting" , async (req , res)=>{
-//     let sampleListing = new Listing({
-//         title: "my new villa",
-//         discription: "by the beach",
-//         price:1200,
-//         location: "calangaute , Goa",
-//         country: "India,"
-//     });
-//    await sampleListing.save();
-//    console.log("sample was saved");
-//    res.send("sucessful testing");
-// })
+app.use("/listings/:id/reviews" , reviews);
 
 app.use((req, res, next) => {
     next(new expressError(404, "Page Not Found"));
