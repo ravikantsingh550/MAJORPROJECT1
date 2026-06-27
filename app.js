@@ -8,6 +8,7 @@ const expressError = require("./utils/expressError.js");
 const listings = require("./routes/listings.js");
 const reviews = require("./routes/reviews.js");
 const session = require("express-session");
+const flash = require("connect-flash");
 
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -31,6 +32,7 @@ app.engine("ejs" , ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 
+
 const sessinOption = {
     secret:"mysupersecretcode",
     resave:false,
@@ -42,11 +44,17 @@ const sessinOption = {
     }
 };
 
-app.use(session(sessinOption));
-
 app.get("/" , (req, res)=>{
     res.send("hii i am root");
 });
+
+app.use(session(sessinOption));
+app.use(flash());
+
+app.use((req ,res , next)=>{
+    res.locals.success = req.flash("success");
+    next();
+})
 
 app.use("/listings" , listings);
 app.use("/listings/:id/reviews" , reviews);
