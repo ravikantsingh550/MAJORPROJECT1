@@ -7,13 +7,16 @@ const { saveRedirectUrl } = require("../middleware.js");
 const userContoller = require("../controllers/user.js");
 const user = require("../models/user.js");
 
-router.get("/signup" , userContoller.renderSignUpform);
 
-router.post("/signup" ,wrapAsync( userContoller.signup));
+router.route("/signup")
+.get( userContoller.renderSignUpform)
+.post(wrapAsync( userContoller.signup))
 
-router.get("/login" , userContoller.renderLoginForm);
+router.route("/login")
+.get(userContoller.renderLoginForm)
+.post(saveRedirectUrl,  passport.authenticate("local" , {failureRedirect:"/login"  , failureFlash:true}) ,userContoller.login)
 
-router.post("/login" ,saveRedirectUrl,  passport.authenticate("local" , {failureRedirect:"/login"  , failureFlash:true}) ,userContoller.login);
+
 
 
 router.get("/logout" , userContoller.logout);
